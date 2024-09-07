@@ -14,36 +14,48 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 
+import androidx.test.espresso.IdlingRegistry;
+import androidx.test.espresso.NoMatchingViewException;
+import androidx.test.espresso.PerformException;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
 import org.junit.runner.RunWith;
 
+
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
 import ru.iteco.fmhandroid.R;
 
 @LargeTest
-@RunWith(AndroidJUnit4.class)
+@RunWith(AllureAndroidJUnit4.class)
 public class NavigationTest {
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
-    @Before
-    public void startTest(){
+    @Before // Выполняется перед тестами
+    public void registerIdlingResources() { //Подключаемся к “счетчику”
+        IdlingRegistry.getInstance().register(EspressoIdlingResources.idlingResource);
         Authorrization.checkAuthority();
-    } // проверка авторизации
+    }
+
+    @After // Выполняется после тестов
+    public void unregisterIdlingResources() { //Отключаемся от “счетчика”
+        IdlingRegistry.getInstance().unregister(EspressoIdlingResources.idlingResource);
+    }
+
 
     @Test
-    public void menuTest() throws InterruptedException {
-            Thread.sleep(5000);
+    public void menuTest()  {
+
             ViewInteraction appCompatImageButton = onView(withId(R.id.main_menu_image_button));
             appCompatImageButton.perform(click());
 
@@ -64,9 +76,9 @@ public class NavigationTest {
 
         }
     @Test
-    public void newsTest()throws InterruptedException{
+    public void newsTest(){
 
-        Thread.sleep(5000);
+
 
         ViewInteraction appCompatImageButton = onView(withId(R.id.main_menu_image_button));
         appCompatImageButton.perform(click());
@@ -78,12 +90,11 @@ public class NavigationTest {
               textView2.check(matches(isDisplayed()));
     }
     @Test
-    public void aboutTest()throws InterruptedException{
-        Thread.sleep(5000);
+    public void aboutTest(){
 
         ViewInteraction appCompatImageButton = onView(withId(R.id.main_menu_image_button));
         appCompatImageButton.perform(click());
-        Thread.sleep(2000);
+
         ViewInteraction textView = onView(
                 allOf(withId(android.R.id.title), withText("About"),
                         isDisplayed()));
@@ -95,8 +106,8 @@ public class NavigationTest {
     }
 
     @Test
-    public void quotesTest()throws InterruptedException{
-        Thread.sleep(5000);
+    public void quotesTest(){
+
         ViewInteraction quoteButton = onView(withId(R.id.our_mission_image_button)).check(matches(isDisplayed()));
         quoteButton.perform(click());
         ViewInteraction textView2=onView(withText("Love is all"));
@@ -104,20 +115,26 @@ public class NavigationTest {
     }
 
     @Test
-    public void exitTest()throws InterruptedException{
-        Thread.sleep(5000);
-        ViewInteraction appCompatImageButton = onView(withId(R.id.authorization_image_button));
-        appCompatImageButton.perform(click());
-        ViewInteraction materialTextView = onView((withId(android.R.id.title)));
-        materialTextView.perform(click());
-        Thread.sleep(3000);
+    public void exitTest(){
+        int counter = 0;
+        while(counter==0){
+            try{
+                ViewInteraction appCompatImageButton = onView(withId(R.id.authorization_image_button));
+                appCompatImageButton.perform(click());
+                ViewInteraction materialTextView = onView((withId(android.R.id.title)));
+                materialTextView.perform(click());
+                counter++;
+            }catch (PerformException | NoMatchingViewException ignored){
+                --counter;
+            }
+        }
+
         ViewInteraction textView = onView((withText("Authorization")));
         textView.check(matches(withText("Authorization")));
         Authorrization.functionEnter("login2","password2");
     }
 
-
-    }
+}
 
 
 

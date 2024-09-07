@@ -11,6 +11,7 @@ import ru.iteco.fmhandroid.exceptions.LostConnectException
 import ru.iteco.fmhandroid.exceptions.UnknownException
 import ru.iteco.fmhandroid.repository.authRepository.AuthRepository
 import ru.iteco.fmhandroid.repository.userRepository.UserRepository
+import ru.iteco.fmhandroid.ui.EspressoIdlingResources
 import javax.inject.Inject
 
 @HiltViewModel

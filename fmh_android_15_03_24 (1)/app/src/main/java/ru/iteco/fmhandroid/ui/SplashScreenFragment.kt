@@ -135,6 +135,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
     private val splashscreenImage = splashscreenImages.random()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         onFullScreen()
@@ -152,23 +153,28 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                 findNavController().navigate(R.id.action_splashScreenFragment_to_mainFragment)
             }
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        EspressoIdlingResources.increment()
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentSplashScreenBinding.bind(view)
 
         when (splashscreenImage.titleBackground) {
+
             R.drawable.background_splash_screen_title_1 -> {
                 binding.splashScreenCircularProgressIndicator.setIndicatorColor(
                     ContextCompat.getColor(
                         requireContext(),
                         R.color.splash_screen_title_1_progress_bar
                     )
+
                 )
                 binding.splashScreenCircularProgressIndicator.trackColor =
                     ContextCompat.getColor(requireContext(), R.color.splash_screen_title_1)
+
             }
             R.drawable.background_splash_screen_title_2 -> {
                 binding.splashScreenCircularProgressIndicator.setIndicatorColor(
@@ -179,6 +185,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                 )
                 binding.splashScreenCircularProgressIndicator.trackColor =
                     ContextCompat.getColor(requireContext(), R.color.splash_screen_title_2)
+
             }
             R.drawable.background_splash_screen_title_3 -> {
                 binding.splashScreenCircularProgressIndicator.setIndicatorColor(
@@ -189,6 +196,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                 )
                 binding.splashScreenCircularProgressIndicator.trackColor =
                     ContextCompat.getColor(requireContext(), R.color.splash_screen_title_3)
+
             }
             R.drawable.background_splash_screen_title_4 -> {
                 binding.splashScreenCircularProgressIndicator.setIndicatorColor(
@@ -199,6 +207,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                 )
                 binding.splashScreenCircularProgressIndicator.trackColor =
                     ContextCompat.getColor(requireContext(), R.color.splash_screen_title_4)
+
             }
             R.drawable.background_splash_screen_title_5 -> {
                 binding.splashScreenCircularProgressIndicator.setIndicatorColor(
@@ -209,6 +218,7 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                 )
                 binding.splashScreenCircularProgressIndicator.trackColor =
                     ContextCompat.getColor(requireContext(), R.color.splash_screen_title_5)
+
             }
             R.drawable.background_splash_screen_title_6 -> {
                 binding.splashScreenCircularProgressIndicator.setIndicatorColor(
@@ -219,7 +229,9 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
                 )
                 binding.splashScreenCircularProgressIndicator.trackColor =
                     ContextCompat.getColor(requireContext(), R.color.splash_screen_title_6)
+
             }
+
         }
 
         binding.splashScreenCircularProgressIndicator.visibility = View.VISIBLE
@@ -233,18 +245,25 @@ class SplashScreenFragment : Fragment(R.layout.fragment_splash_screen) {
 
         lifecycleScope.launch {
             delay(3_000)
+            EspressoIdlingResources.decrement()
             authViewModel.authorization()
+
         }
+
     }
 
     override fun onDestroyView() {
+
         super.onDestroyView()
 
         binding.splashScreenCircularProgressIndicator.visibility = View.GONE
         offFullScreen()
+
+
     }
 
     private fun onFullScreen() {
+
         val window: Window = requireActivity().window
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_FULLSCREEN
     }

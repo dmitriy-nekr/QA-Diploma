@@ -21,11 +21,14 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
     val viewModel: AuthViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
 
         lifecycleScope.launch {
+
             viewModel.loginEvent.collectLatest {
                 findNavController().navigate(R.id.action_authFragment_to_mainFragment)
+
             }
         }
         lifecycleScope.launch {
@@ -55,9 +58,11 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                 ).show()
             }
         }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        EspressoIdlingResources.increment()
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentAuthBinding.bind(view)
@@ -80,11 +85,14 @@ class AuthFragment : Fragment(R.layout.fragment_auth) {
                     binding.loginTextInputLayout.editText?.text.toString().trim(),
                     binding.passwordTextInputLayout.editText?.text.toString().trim()
                 )
+
             }
         }
 
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner) {
             activity?.finishAffinity()
+
         }
+        EspressoIdlingResources.decrement()
     }
 }

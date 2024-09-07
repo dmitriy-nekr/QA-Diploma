@@ -18,6 +18,7 @@ import ru.iteco.fmhandroid.databinding.FragmentMainBinding
 import ru.iteco.fmhandroid.utils.Utils
 import ru.iteco.fmhandroid.viewmodel.AuthViewModel
 import ru.iteco.fmhandroid.viewmodel.NewsViewModel
+import kotlin.math.E
 
 @AndroidEntryPoint
 class MainFragment : Fragment(R.layout.fragment_main) {
@@ -42,6 +43,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
     @SuppressLint("Recycle")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+       
         super.onViewCreated(view, savedInstanceState)
 
         binding = FragmentMainBinding.bind(view)
@@ -49,12 +51,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         val mainMenu = PopupMenu(
             context,
             binding.containerCustomAppBarIncludeOnFragmentMain.mainMenuImageButton
+
         )
         mainMenu.inflate(R.menu.menu_main)
         val menuItemMain = mainMenu.menu.getItem(0)
         menuItemMain.isEnabled = false
         binding.containerCustomAppBarIncludeOnFragmentMain.mainMenuImageButton.setOnClickListener {
             mainMenu.show()
+
         }
         mainMenu.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -81,6 +85,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         binding.containerCustomAppBarIncludeOnFragmentMain.authorizationImageButton.setOnClickListener {
             authorizationMenu.show()
+
         }
 
         binding.containerCustomAppBarIncludeOnFragmentMain.ourMissionImageButton.setOnClickListener {
@@ -88,7 +93,9 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         authorizationMenu.setOnMenuItemClickListener {
+
             when (it.itemId) {
+
                 R.id.authorization_logout_menu_item -> {
                     authViewModel.logOut()
                     findNavController().navigate(R.id.action_mainFragment_to_authFragment)
@@ -96,8 +103,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 }
 
                 else -> false
+
             }
+
         }
+
 
         binding.containerListNewsIncludeOnFragmentMain.apply {
             sortNewsMaterialButton.visibility = View.GONE
@@ -136,6 +146,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             newsViewModel.data.collectLatest {
                 newsListAdapter.submitList(it.take(3))
             }
+
         }
 
     }

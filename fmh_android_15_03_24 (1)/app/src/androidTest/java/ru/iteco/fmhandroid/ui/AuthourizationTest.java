@@ -1,13 +1,14 @@
 package ru.iteco.fmhandroid.ui;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.ext.junit.rules.ActivityScenarioRule;
+
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.filters.LargeTest;
 
@@ -17,85 +18,98 @@ import org.junit.runner.RunWith;
 import org.junit.Rule;
 import org.junit.Test;
 
+
 import io.qameta.allure.android.runners.AllureAndroidJUnit4;
-import ru.iteco.fmhandroid.EspressoIdlingResources;
+
+import io.qameta.allure.android.runners.AllureAndroidJUnitRunner;
+import io.qameta.allure.kotlin.junit4.AllureRunner;
 import ru.iteco.fmhandroid.R;
+
+
 @LargeTest
-@RunWith(AndroidJUnit4.class)
+@RunWith(AllureAndroidJUnit4.class)
 public class AuthourizationTest {
 
     @Rule
     public ActivityScenarioRule<AppActivity> mActivityScenarioRule =
             new ActivityScenarioRule<>(AppActivity.class);
-    @Before
-    public void startTest(){
-        Authorrization.checkNotAuthority();// проверка, что пользователь не авторизован, если авторизован выход из учетной записи
-    }
 
-    /*@Before
-    public void registerIdlingResources() {
+
+    @Before // Выполняется перед тестами
+    public void registerIdlingResources() { //Подключаемся к “счетчику”
         IdlingRegistry.getInstance().register(EspressoIdlingResources.idlingResource);
-
+        Authorrization.checkNotAuthority();
     }
 
-
-    @After
-    public void unregisterIdlingResources() {
+    @After // Выполняется после тестов
+    public void unregisterIdlingResources() { //Отключаемся от “счетчика”
         IdlingRegistry.getInstance().unregister(EspressoIdlingResources.idlingResource);
-    }*/
+    }
+
 
     @Test
-    public void successAuthorizationTest() throws InterruptedException {
+    public void successAuthorizationTest()  {
+
         Authorrization.functionEnter("login2","password2");
-        Thread.sleep(5000);
-        ViewInteraction imageView = onView(withId(R.id.trademark_image_view));
-        imageView.check(matches(isDisplayed()));
+        int counter = 0;
+        while (counter==0){
+            try{
+                ViewInteraction appCompatImageButton = onView(withId(R.id.authorization_image_button));
+                appCompatImageButton.check(matches(isDisplayed()));
+                counter++;
+            }catch (AssertionError ignored){
+                --counter;
+            }
+        }
 
         Authorrization.checkNotAuthority();
-        Thread.sleep(3000);
         ViewInteraction textView = onView((withText("Authorization")));
         textView.check(matches(withText("Authorization")));
     }
+
+
     @Test
-    public void emptyAuthorizationTest() throws InterruptedException {
+    public void emptyAuthorizationTest()  {
         Authorrization.functionEnter(" "," ");
         ViewInteraction textView =onView(withText("Login and password cannot be empty")).inRoot(new ToastMatcher());
             textView.check(matches(isDisplayed()));
     }
     @Test
-    public void wrongAuthorizationTest() throws InterruptedException {
+    public void wrongAuthorizationTest()  {
         Authorrization.functionEnter("login","password");
         ViewInteraction textView =onView(withText("Something went wrong. Try again later.")).inRoot(new ToastMatcher());
         textView.check(matches(isDisplayed()));
     }
     @Test
-    public void emptyLoginAuthorizationTest() throws InterruptedException {
+    public void emptyLoginAuthorizationTest() {
         Authorrization.functionEnter(" ","password2");
         ViewInteraction textView =onView(withText("Login and password cannot be empty")).inRoot(new ToastMatcher());
         textView.check(matches(isDisplayed()));
     }
     @Test
-    public void emptyPasswordAuthorizationTest() throws InterruptedException {
+    public void emptyPasswordAuthorizationTest()  {
         Authorrization.functionEnter("login2"," ");
         ViewInteraction textView =onView(withText("Login and password cannot be empty")).inRoot(new ToastMatcher());
         textView.check(matches(isDisplayed()));
     }
     @Test
-    public void exchangeLoginPasswordAuthorizationTest() throws InterruptedException {
+    public void exchangeLoginPasswordAuthorizationTest() {
         Authorrization.functionEnter("password2","login2");
         ViewInteraction textView =onView(withText("Something went wrong. Try again later.")).inRoot(new ToastMatcher());
         textView.check(matches(isDisplayed()));
     }
     @Test
-    public void specialCharactersAuthorizationTest() throws InterruptedException {
+    public void specialCharactersAuthorizationTest()  {
         Authorrization.functionEnter("@login2","password2$");
         ViewInteraction textView =onView(withText("Something went wrong. Try again later.")).inRoot(new ToastMatcher());
         textView.check(matches(isDisplayed()));
     }
     @Test
-    public void differentLetterCaseAuthorizationTest() throws InterruptedException {
+    public void differentLetterCaseAuthorizationTest()  {
         Authorrization.functionEnter("lOgIN2","pASSword2");
         ViewInteraction textView =onView(withText("Something went wrong. Try again later.")).inRoot(new ToastMatcher());
         textView.check(matches(isDisplayed()));
     }
+
+
 }
