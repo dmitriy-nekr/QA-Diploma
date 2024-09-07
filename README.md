@@ -31,10 +31,10 @@
 
 ### **Документация**
 
-[План автоматизации тестирования]()
+[План автоматизации тестирования](https://github.com/dmitriy-nekr/QA-Diploma/blob/main/Plan.md)
 
-[Чек-лист]()
+[Чек-лист](https://github.com/dmitriy-nekr/QA-Diploma/blob/main/Check.xlsx)
 
-[Тест-кейсы]()
+[Тест-кейсы](https://github.com/dmitriy-nekr/QA-Diploma/blob/main/Cases.xlsx)
 
-[Отчёт о проведённом тестировании]()
+[Отчёт о проведённом тестировании](https://github.com/dmitriy-nekr/QA-Diploma/blob/main/Result.md)
