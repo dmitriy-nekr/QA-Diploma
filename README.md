@@ -21,10 +21,15 @@
 
 **1.** Перейти в файл в для проверки тестирования:    
 
-  fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\AuthourizationTest.java
-   fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\Navigation.java
+fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\test\AuthTest.java
 
-  
+fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\test\AboutUsTest.java
+
+fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\test\NewsTest.java
+
+fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\test\OurMissionTest.java  
+
+fmh_android_15_03_24 (1)\app\src\androidTest\java\ru\iteco\fmhandroid\ui\test\MainScreenTest.java
 
 **2.** Нажать на кнопку **"Run"**
 
